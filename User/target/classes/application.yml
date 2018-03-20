@@ -1,0 +1,13 @@
+#spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+#spring.data.mongodb.host=127.0.0.1
+#spring.data.mongodb.port=27017
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ufs
+      username: root
+      password: root
+
+#spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.show-sql=true
+#spring.jackson.serialization.indent_output=true
