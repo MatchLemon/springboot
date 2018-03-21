@@ -15,7 +15,6 @@ public class User implements Serializable {
     //@GeneratedValue(strategy = GenerationType.AUTO)
     private ObjectId id;
     private String name;
-    @Field("password")
     private String passwd;
     private String phone;
     private String addr;

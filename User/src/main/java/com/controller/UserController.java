@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QPageRequest;
+import org.springframework.data.querydsl.QSort;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,10 +28,13 @@ public class UserController {
         return "qwe";
     }
 
-    @RequestMapping(value = "/user/save")
-    public User saveUser() {
-        User user = userRepository.save(new User("jack", "123456", "095555555", "上海"));
-        return user;
+    @RequestMapping(value = "/user/save", method = RequestMethod.POST)
+    public Object saveUser(User user) {
+        if (user == null) {
+            return
+        }
+        User result = userRepository.save(user);
+        return result;
     }
 
     @RequestMapping(value = "/user/list")
@@ -37,6 +43,7 @@ public class UserController {
         for (User demo : list) {
             System.out.println(demo.toString());
         }
+
         return list;
     }
 
@@ -48,7 +55,7 @@ public class UserController {
     @RequestMapping(value = "/user/findUsers")
     public Page<User> findUser() {
        Sort sort =  new Sort(Sort.Direction.ASC, "Id");
-       return userRepository.findAll(new PageRequest(0, 10, sort));
+       return userRepository.findAll(PageRequest.of(0,10,sort));
     }
 
     public void UserLogin() {
