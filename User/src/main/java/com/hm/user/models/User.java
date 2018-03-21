@@ -1,36 +1,39 @@
 package com.hm.user.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.io.Serializable;
 
-@Entity
+@Document(collection="user")
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue
-    private Long Id;
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    private ObjectId id;
     private String name;
+    @Field("password")
     private String passwd;
     private String phone;
     private String addr;
 
     public User(String name, String passwd, String phone, String addr) {
+
         this.name = name;
         this.passwd = passwd;
         this.phone = phone;
         this.addr = addr;
     }
 
-    @Column(nullable = false)
-    public Long getId() {
-        return Id;
+    public String getId() {
+        return id.toString();
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public void setId(ObjectId id) {
+        id = id;
     }
 
     public String getName() {
@@ -65,4 +68,14 @@ public class User implements Serializable {
         this.addr = addr;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "Id=" + getId() +
+                ", name='" + name + '\'' +
+                ", passwd='" + passwd + '\'' +
+                ", phone='" + phone + '\'' +
+                ", addr='" + addr + '\'' +
+                '}';
+    }
 }
