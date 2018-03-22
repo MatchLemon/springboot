@@ -1,23 +1,33 @@
 package com.hm.user.models;
 
 
-import org.bson.types.ObjectId;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Document(collection="user")
+@Document(collection = "user")
+@JsonIgnoreProperties(value = {"passwd"})
 public class User implements Serializable {
 
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
-    private ObjectId id;
+    private String id;
+    @NotNull
     private String name;
+    @NotNull
+    //@JsonIgnore
     private String passwd;
+    @NotNull
     private String phone;
+    @NotNull
+    private String email;
     private String addr;
+
+    public User() {
+    }
 
     public User(String name, String passwd, String phone, String addr) {
 
@@ -27,12 +37,20 @@ public class User implements Serializable {
         this.addr = addr;
     }
 
-    public String getId() {
-        return id.toString();
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(ObjectId id) {
-        id = id;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
