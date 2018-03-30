@@ -15,6 +15,7 @@ public class Response {
         if (!resultMap.containsKey("code") ||  resultMap.get("code") != Response.SUCCESS) {
             resultMap.put("code", Response.SUCCESS);
         }
+        resultMap.remove("msg");
         return Response.assemble("data", obj);
     }
 

@@ -9,6 +9,8 @@
         <module name="DemoTest1" />
         <module name="DemoTest2" />
         <module name="House" />
+        <module name="oauth-security-client" />
+        <module name="oauthsecurityclient" />
         <module name="User" />
       </profile>
     </annotationProcessing>
@@ -18,6 +20,8 @@
       <module name="DemoTest1" target="1.8" />
       <module name="DemoTest2" target="1.8" />
       <module name="House" target="1.8" />
+      <module name="oauth-security-client" target="1.8" />
+      <module name="oauthsecurityclient" target="1.8" />
       <module name="User" target="1.8" />
     </bytecodeTargetLevel>
   </component>

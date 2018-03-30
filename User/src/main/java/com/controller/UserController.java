@@ -2,15 +2,20 @@ package com.controller;
 
 import com.hm.user.models.User;
 import com.hm.user.service.UserRepository;
+import com.hm.user.utils.Constant;
 import com.hm.user.utils.Response;
 import com.hm.user.utils.StringUtils;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.data.domain.ExampleMatcher.*;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +24,6 @@ import java.util.Optional;
 import static org.springframework.data.domain.ExampleMatcher.matching;
 
 @RestController
-
 public class UserController {
     @Autowired
     public UserRepository userRepository;
@@ -57,12 +61,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/findUsers")
-    public Page<User> findUser() {
+    public Page<User> findUser(@RequestParam(name = "page",defaultValue = "1") Integer page, @RequestParam(name = "size",defaultValue = "10") Integer size) {
        Sort sort =  new Sort(Sort.Direction.ASC, "Id");
-       return userRepository.findAll(PageRequest.of(0,10,sort));
+       Page<User> userPage = userRepository.findAll(PageRequest.of(page-1, size, sort));
+//       Map map = new HashMap();
+//       map.put("items", userPage.getContent());
+//       map.put("totalCount", userPage.getTotalElements());
+//       map.put("totalPage", userPage.getTotalPages());
+       return userPage;
     }
+
     @PostMapping(value = "/user/login")
-    public Object UserLogin(@RequestBody Map<String,String> map) {
+    public Object UserLogin(@RequestBody Map<String,String> map, HttpSession session) {
         if (!map.containsKey("phone") || !map.containsKey("passwd") || StringUtils.isEmpty(map.get("phone")) || StringUtils.isEmpty(map.get("passwd"))) {
             return Response.fialed("params is requried");
         }
@@ -70,14 +80,17 @@ public class UserController {
         user.setPhone(map.get("phone").toString());
         Example<User> example = Example.of(user, matching().withStringMatcher(StringMatcher.ENDING));
         Optional<User> option = userRepository.findOne(example);
-        if(option.isPresent()) {
+        if(!option.isPresent()) {
             return Response.fialed(202,"user no exist");
         }
-
+        user = option.get();
+        session.setAttribute(Constant.SESSION_USER_KEY, user);
         return Response.success(user);
     }
 
-    public void UserLogout() {}
-
-
+    @PostMapping(value = "/user/logout")
+    public Object UserLogout(HttpSession session) {
+        session.invalidate();
+        return Response.success("success");
+    }
 }

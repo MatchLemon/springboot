@@ -1,9 +1,12 @@
-#spring.datasource.driver-class-name=com.mysql.jdbc.Driver
-#spring.data.mongodb.host=127.0.0.1
-#spring.data.mongodb.port=27017
 #spring:
-#  jpa:
-#    show-sql: true
+#  http:
+#    encoding:
+#      force: true
+#      charset: UTF-8
+#      enabled: true
+server:
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   data:
     mongodb:
